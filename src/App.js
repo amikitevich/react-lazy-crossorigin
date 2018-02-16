@@ -4,7 +4,12 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import loadable from 'loadable-components';
+// import loadable from 'loadable-components';
+import Loadable from 'react-loadable';
+
+const Loading = () => (
+  null
+);
 
 const Home = () => (
   <div>
@@ -18,9 +23,22 @@ const Topic = ({ match }) => (
   </div>
 );
 
-const pages = {
-  About: loadable(() => import('./about'))
-}
+const page = {
+  // about: loadable(() => import('./About'), {
+  //   modules: ['./About']
+  // })
+
+  about: Loadable({
+    loader: () => import('./About'),
+    loading: Loading
+  })
+  // about: Loadable({
+  //   loader: () => import('./About'),
+  //   // modules: ['./About'],
+  //   // webpack: () => [require.resolveWeak('./About')],
+  //   loading: Loading
+  // })
+};
 
 const Topics = ({ match }) => (
   <div>
@@ -62,7 +80,7 @@ const BasicExample = () => (
       <hr/>
 
       <Route exact path="/" component={Home}/>
-      <Route path="/about" component={pages.About}/>
+      <Route path="/about" component={page.about}/>
       <Route path="/topics" component={Topics}/>
     </div>
   </Router>
